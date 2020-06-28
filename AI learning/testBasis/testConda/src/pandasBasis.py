@@ -7,7 +7,7 @@ import numpy as np
 
 #读取文件
 
-idCrad = pd.read_csv("../sample/test1.csv",encoding = 'gbk')
+idCrad = pd.read_csv("../sample/test1.csv", encoding ='gbk')
 print(type(idCrad))
 print(idCrad.dtypes)
 
@@ -41,7 +41,7 @@ idCrad.sort_values("money",inplace=True,ascending=True)
 print(idCrad)
 
 # 空值处理
-idCrad0 = pd.read_csv("../sample/test2.csv",encoding = 'gbk')
+idCrad0 = pd.read_csv("../sample/test2.csv", encoding ='gbk')
 print(type(idCrad0))
 print(idCrad0.dtypes)
 print(idCrad0)

@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 # 引入出数据
-idCrad = pd.read_csv("../sample/test1.csv",encoding = 'gbk')
+idCrad = pd.read_csv("../sample/test1.csv", encoding ='gbk')
 print(type(idCrad))
 print(idCrad.dtypes)
 print(idCrad)

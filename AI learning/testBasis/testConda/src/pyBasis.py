@@ -1,4 +1,4 @@
-# test conda pakage
+# testBasis conda pakage
 # python note
 '''
 多行注释
@@ -12,7 +12,7 @@ import seaborn as sn
 '''
 输入，输出
 '''
-print("test np, pd, mpl, sn is OK !!")
+print("testBasis np, pd, mpl, sn is OK !!")
 
 print("np","pd","mpl","sn")
 
