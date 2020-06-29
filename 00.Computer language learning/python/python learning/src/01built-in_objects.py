@@ -45,18 +45,21 @@ built-in_functions:内置函数(函数名称对pyhton来说也是对象):
 2.字符和字符串:
     ord():返回ASCII码
     bin():返回二进制
+    chr():转换
     sys.getdefaultencoding()
     int():字符转换类型
     \ :转移字符
     有序排列:序列
     + * :字符串操作
     len():求长度
-    in:是否存在
+    in:是否存在,is:是否为同一个对象
     
     索引和切片:chr[::]  -> chr[0],chr[-1],chr[0:2]
     print(),input():输出,输入
     
     字符串属性和方法:
+    islower(),upper(),lower():大小写翻转
+    isalpha():是否字符
     index():返回子集的索引
     join():多个字符串的连接
     split():切分字符串
@@ -92,11 +95,65 @@ built-in_functions:内置函数(函数名称对pyhton来说也是对象):
     t[::] 索引和切片:t[::]  -> t[0],t[-1],t[0:2]  t[::-1]
     list(t),tuple(ls):互相转换
     
-4.字典和集合:
-    字典:dict(k,v)
+4.字典和集合:不是序列,可变对象
+    字典:dict(k,v), k为不可变对象
+    dict={},dict(a=1,b=2),d = {"a":1,"b":2}
+    dict["key"] = vaule
+    d = dict([('a',1),('b',2),('c',4)])
+    d = dict({'a':1,'b':2})
     
-    集合:set
+    方法:
+    get():返回key的vaule
+    setdefault():设置值,插入
+    update():增加键值对
+    print(dic.update([('a',4),('d',5)]))
+    print(dic.update({'e':6})
     
+    del dic['a']:特殊的删除写法, in 是否存在
+    pop():删除某个值
+    poopitem():弹出最后一个值
+    
+    字典和列表:字典不是序列,容器类对象,可变对象,python3.6开始字典key也有顺序(创建时的顺序)
+    
+    集合:set,无序,(不能用可变对象作为set里的元素)
+    可变集合,
+    set([1,2,3,4]),{}
+    add():添加元素
+    pop():弹出元素
+    remove():删除元素没有时报错
+    diccard():删除元素没有时不报错
+    
+    不可变集合,一旦创建就不可变
+    frozenset([]),{}
+    
+    copy():a shallow copy of D,浅拷贝
+    import copy => copy.deepcopy(),深拷贝
+    
+    集合运算: 
+    issubset():子集
+    | union ,& intersection, - difference,并交差集
+    
+    哈希表,哈希code
+    
+5.布尔类型bool,值只有True和False
+    四则运算:True:1,False:0 (默认)    
+    True + 1
+    bool():定义
+    任何空对象为False,任何不为空对象为True
+    检查对象是否为空,
+    
+    比较运算: > , < , == , != , >= , <=
+    返回值 True,False
+    逻辑运算: and , or , not 
+    返回值 左边或者右边的对象
+    
+5.import用法
+    import module
+    import module as new_name 
+    from muodule import function
+    from muodule import function as new_name
+    form module import *
+
 '''
 
 print('---------------------------------------------整数,浮点数部分-----------------------------------------------------')
@@ -216,6 +273,42 @@ print('---------------------------------------------列表,元组 部分--------
 
 print('---------------------------------------------字典,集合 部分-----------------------------------------------------')
 
+print(type({}))
+d = {"a":1,"b":2}
+di = dict(a=1,b=2)
+d = dict([('a',1),('b',2),('c',4)])
+d = dict({'a':1,'b':2})
 
+print(d,di,d["a"])
+dic = dict([('a',1),('b',2)])
+print(type(dic))
+print(dic["a"],dic.get("c",'n'))
+print(dic.setdefault('c',3))
+print(dic.update([('a',4),('d',5)]))
+print(dic.update({'e':6}))
+print(dic)
+
+del dic['a']
+print(dic)
+
+dic.pop("b")
+print(dic)
+
+se = set([1,2,3,4])
+print(se,type(se))
+
+#se1 = set({'pyton',[1,2,3]})
+se1 = set({'a','b'})
+
+print(help(dict.copy))
 
 print('---------------------------------------------字典,集合 部分-----------------------------------------------------')
+
+print('---------------------------------------------布尔类型  部分-----------------------------------------------------')
+
+bo = True
+print(bo + 1)
+print(bool(" "))
+print(bool())
+
+print('---------------------------------------------布尔类型  部分-----------------------------------------------------')
