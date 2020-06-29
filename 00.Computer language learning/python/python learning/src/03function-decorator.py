@@ -8,9 +8,9 @@
     函数也是对象fun
     fun函数对象本身 ,fun()函数被调用
 
-嵌套函数与装饰器
+嵌套函数与装饰器*
 
-特殊函数
+特殊函数*
     lambda
     map
     filter
@@ -129,7 +129,6 @@ print(foo(ls),ls)
 
 def fun(fun1):
     return fun1()
-
 def opt_seq(func,seq):
     return [func(i) for i in seq]
 opt_seq(abs,{-1,-2,3})
@@ -155,17 +154,13 @@ def p_deco(func):
     def wrapper(name):
         return "<p>{0}<p>".format(func(name))
     return wrapper
-
 def d_deco(func):
     def wrapper(name):
         return "<d>{0}<d>".format(func(name))
     return wrapper
-
 def book0(name):
     return 'the name of my book is {0}'.format(name)
-
 print(p_deco(book0)("python"))
-
 #装饰器函数,多层装饰器
 @d_deco
 @p_deco
@@ -184,7 +179,6 @@ def timethis(func):
         end = time.time()
         print(func.__name__,end - start)
     return wrapper
-
 @timethis
 def countdown(n):
     while n > 0:
