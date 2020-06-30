@@ -2,15 +2,17 @@
 
 '''
 
-1.python 中的常用模块
+1.python 中的常用模块部分
 
 标准库和第三方包
     安装和使用
-    自编写第三方包
+    第三方包
+    辅助工具isort,pylint,pylama,autopep8
 
 搭建模块
+    py文件
     包的结构
-    包发布
+    包编写和发布
 
 IO流
     操作txt,csv,excel文件类型
@@ -49,8 +51,16 @@ IO流
     pandas:数据集处理
     requests:http包
     
+    辅助工具:
+    isort:import排序工具
+    pylint,pylama:代码静态检查工具
+    autopep8:自动化格式工具
+    
 2.模块和包的结构与发布
     module.py文件
+    #!/usr/bin/env/ python3    #!/usr/bin/python3   #解释器声明 必须文件第一行,不能有空行 Linux系统用
+    # -*- coding: utf-8 -*-     #文件编码表明
+    python file.py
     
     在当前路径:
     import module

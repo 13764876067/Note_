@@ -2,7 +2,7 @@
 
 '''
 
-1.python 中的sql操作
+1.python 中的sql操作部分
 
 sqlite数据库
     增,删,查,除,创建
