@@ -38,8 +38,10 @@
     类属性,=>静态属性
     实例属性,=>动态属性
     
+    python中,甚至类本身的定义都是可以修改的
     添加,修改类属性,
     添加,修改实例属性
+    添加方法=>函数
     
     作用域问题:
     只有类才能修改创建类属性
@@ -52,7 +54,7 @@
     
     方法:
     初始化方法=>构造器,实例创建时执行
-    普通方法
+    普通方法=>实例方法
     
     装饰符
     @classmethod :cls表示类本身
@@ -69,16 +71,49 @@
     单继承:可以用super()
     多继承:__mro__
     
+    继承:对子类的实例化,会沿着继承链(A,B,C)从上到下,从左到右(子类继承括号的顺序)的顺序查找基类,然后按着相反的方式进行实例化
+    #可以使用super来调用父类的被重载的方法
+    #一定注意继承链的查找顺序
+    
+    #中间基类每一层都要调用super函数
+    #不然继承链会在没有调用super函数的那一层断掉
+    #对init亦是如此,对普通方法也是如此
+    
     多态:(强类型(强检验参数类型),弱类型语言(不检验参数类型))
     python自身带有多态类型,即弱类型语言,
     
     封装:__
     私有化
+    提到面向对象，那么-定有对被访问对象的访问权限控制相关的功能，如public, protected, private等。
+    而这里是python比较特别的地方，python没 有提供相关的机制，python的作者 认为类的设计和使用者应该
+    进行充分的沟通，而不是依赖这种语法设计来保证访问权限。
     
-3.自定义对象类型
+    但是Python里面还是提供了一个替代方案来实现私有成员。在python中， 以"__"双下划线开头的成员是私
+    有成员，外部调用者不能直接访问，注意这里提了一个直接，事实上，想访问还是有办法的。
+    class A:
+        def __init__ (self):
+            self.__var1 = 1
+            self.__var2 = 2
+    a=A()
+    print(a._A__var1 )#可以突破限制访问
+    
+3.自定义对象类型(魔术方法 magic method)
     类和类型
     ##str:用户,repr:解释器
     __repr__ , __str__
+    
+        到这里，带双下划线的方法已经出现过很多次了，这里正式介绍一下。
+        Python中，所有以“_” 双下划线包起来的方法，都统称为“Magic Method”，中文称魔术方法。
+    同时还存在"__"双下划线开头的成员，又是另外的用途，待会儿单独介绍。
+        Magic method存在于类中-般作为实例方法，其与特定的python内建函数或特定操作对应-般都有特
+    定的用途。换句话说，python中有-批Magic Method,其名字和用途是已经确定了的，我们只需要根据
+    自己的需要，实现这些MagicMethod即可，python的一些语法和内建函数会自动依赖这些MagicMethod
+    来运行。已经介绍过的__init__就是比较常见的一个，与之对应的是__del__ 这两个函数分别用于实例
+    的初始化和删除，也就是其他面向对象语言中的构造器和析构器。
+        python中有比较完善的垃圾回收机制，所以很多时候不需要使用析构器。虽然很多文献指出这个垃圾回
+    收机制的效率不高(甚 至有人指出，禁用垃圾回收能提高python的运行效率)。前面已经用过的len函数，依
+    赖于__len__ , 而dict的key必须实现__hash__等。关于Magic Method,可以使用dir这个内建函数去
+    查询需要模仿实现的类型，里面都有什么方法。
     
 4.控制属性访问
     1.优化内存: __slots__
@@ -125,6 +160,22 @@ class SuperMan:
         return " ya! you have to die!"
 guojing = SuperMan('guojing')
 print(guojing.gender,guojing.name,guojing.nine_negative_kungfu())
+
+#在python中，甚至类本身的定义都是可以随时被修改的。
+class Greeter3:
+    #Constructor
+    def __init__(self, name):
+            self.name = name
+#独立于类定义的一个函数定义
+def greet(this, loud=False):
+    if loud:
+        print('HELLO, %s!' % this . name . upper())
+    else:
+        print( 'Hello, %s' % this. name )
+Greeter3.greet = greet #函数的定义可以在运行的时候被替换
+g = Greeter3('Greeter3')
+g.greet()
+g.greet(loud=True)
 
 class Student:
     ''' A class of Student'''
@@ -254,6 +305,15 @@ class Fraction:
 print(Fraction(2,3))
 Fraction(1,3)
 
+#这里做个有意思的小程序,对于这个自定的class,运行len会返回当前系统的unix timestamp
+import datetime
+class my_len:
+    def __len__(self):
+        return int(datetime.datetime.now().timestamp())
+        #python里面的unixtimes tamp包含毫秒，但是len只能处理整数
+print(len(my_len()))
+#当然这里的实现其实很不好,因为这种方式很奇怪,返回的数据让人很困惑.
+
 print('---------------------------------------------自定义对象类型-----------------------------------------------------')
 
 print('---------------------------------------------控制的属性访问-----------------------------------------------------')
@@ -349,5 +409,46 @@ print(list(itertools.islice(fib(), 10)))
 
 print([x ** 2 for x in range(10)])
 print((x ** 2 for x in range(10)))
+
+#yield 可做为一个list迭代器
+class my_List(object):
+    def __init__(self):
+        self.l = [1, 2, 3, 4]
+        self.l.reverse() # 这里用的pop,是从后面开始的
+    def __iter__(self):
+        return self
+    def __next__ (self):
+        if len(self.l) > 0:
+            return self.l.pop( )
+        else:
+            raise StopIteration
+it = my_List().__iter__()
+# it = iter(my_ List()) #或者可以用magic method
+print(it)
+print(next(it))
+print(it.__next__()) #也可以调用一个magic method, 效果是一样的。
+print (next(it))
+print(next(it))
+print(next(it)) # 已经访问完毕了，继续访问则会报错。
+
+#可以看到，这里的自定方式，实现的这个my_ List在特定情况下可以当作List使用，但是这种语法有些繁琐，
+#因此python中专门门提供了generator生成器语法。
+def my_list():
+    for i in [1,2,3,4]:
+        yield i
+# generator看上去就像是一个 普通的函数，只不过把return替换成 J yield
+#每次执行到yield的时候，函数会胡返回一个值，但是并不结束
+#而是把中间状态都保存起来，只要后续还有数据就可以继续访问
+l = my_list()
+for i in l:
+    print(i)
+t = my_list().__iter__()
+# it = iter(I) #或者可以用magic method
+print(it)
+print(next(it))
+print(it.__next__()) #也可以调用一个magic method, 效果是一样的。
+print(next(it))
+print(next(it))
+print(next(it)) # 已经访问完毕了，继续访问则会报错。
 
 print('---------------------------------------------迭代器和生成器-----------------------------------------------------')

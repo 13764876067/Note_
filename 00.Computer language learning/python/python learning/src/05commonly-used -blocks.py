@@ -10,11 +10,11 @@
     辅助工具isort,pylint,pylama,autopep8
 
 搭建模块
-    py文件
+    __init__.py,__main__.py,.py文件
     包的结构
     包编写和发布
 
-IO流
+IO流,上下文管理器
     操作txt,csv,excel文件类型
 
 异常处理
@@ -67,7 +67,7 @@ IO流
     moudle.class,module.method()
     
     if __name__ == "__main__":去掉测试调试的代码
-    判断语句 __name__
+    判断语句 __name__ 是否是main方法
     dir(module)
     
     不在当前路径:
@@ -75,10 +75,17 @@ IO流
     sys.path.append(路径)
     
     包:有一定的层次的目录结构
-    .py
-    __init__.py
+    .py:源文件
+    __init__.py:可以进行初始化操作
+    __main__.py:main()方法
     
-    包结构:    
+    ├──pkg
+    ├── __init__.py
+    ├── __main__.py
+    如果你希望 python 将一个文件夹作为 Package 对待，那么这个文件夹中必须包含一个名为 __init__.py 的文件，即使它是空的。
+    如果你需要 python 将一个文件夹作为 Package 执行，那么这个文件夹中必须包含一个名为 __main__.py 的文件.
+    
+    包结构:
     A 
       __init__.py
         pycache__
@@ -120,7 +127,9 @@ IO流
     
     上下文管理器:
     with open("a.txt",'a') as f:
-           f.write()      
+           f.write()
+    context manager:有两个__enter__和__exit__两个方法,分别用于处理资源管理器的初始化和资源的清理方法       
+                 
     for line in f:
         print(line,end='')
     f.seek()       
@@ -159,10 +168,15 @@ IO流
     try:捕获
     except:抛出异常
     except(ZeroDivisionError,ValueError)
-    raise
+    raise:可以用来抛出一个异常
+    finally:最后一定执行
+    
+    sys.exc_info(),获取异常信息,trackback.extract_tb():获取堆栈信息
     
     自定义异常类型:
     异常对象
+    
+    异常类继承结构BaseException,Exception
     
 5.搭建系统:语音合成系统
     SDK:软件工具开发包
@@ -185,7 +199,8 @@ IO流
             f.write(result)
             
 6.网络爬虫:
-    requests,lxml,re,json
+    socket:pyzmq
+    web:requests,lxml,re,json
     
     import requests
     from lxml import html
@@ -272,10 +287,55 @@ print('---------------------------------------------包的结构与发布-------
 
 print('---------------------------------------------文件操作之读写-----------------------------------------------------')
 
+#上下文管理器
+class my_open:
+    def __init__(self,path, suppress=False):
+        self.path = path
+        self.suppress = suppress
+    def read(self):
+        return self.f.read( )
+    def fail(self):
+        print('try raise a error')
+        raise ValueError
+    def __enter__(self):
+        '''
+        可以返回self或者其他什么东西
+        在with语法中，如果有as,那么这里返回的内容会被绑定到as后面的变量.上面
+        :return:
+        '''
+        print('starting with block')
+        self.f = open(self.path)
+        return self
+    def __exit__(self,exc_type, exc_value, exc_tb):
+        '''
+        如果在context manager运行的过程中出现了异常，那么异常会被传入exit作为判断的依据
+        exit返回False则认为context manager失败了，这些异常会被直接重新抛出
+        但是如果exit计里面处理了这些异常，而且返向了-个True.那么这些异常将不会再向外传递
+        '''
+        self.f.close( )
+        if exc_type is None:
+            print('exited normally\n' )
+        else:
+            print('raise an exception!' + str(exc_type))
+        return self.suppress
+try:
+    with my_open('test.txt') as f:
+        f.fail()
+except ValueError:
+    print('ValueError raised')
+
+try:
+    with my_open('test.txt',suppress=True) as f:
+        f.fail()
+except ValueError:
+    print('ValueError raised')
+
+#IO流
 import os
 print(os.getcwd())
 #f = open() :创建文件 打开模式 r w a b + x
 #f.write()
+#f.writelines()
 #f.read()
 #f.close()
 
