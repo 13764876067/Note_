@@ -16,3 +16,20 @@
 
 6.无穷级数
 
+**Calculus**
+
+    This module is a detailed summary of calculus in advanced mathematics notes including the following:
+
+0. Function, limit
+
+1. The derivative
+
+2. The differential
+
+3. The partial derivatives
+
+4. The integral
+
+5. Arc length, surface
+
+6. Infinite series
